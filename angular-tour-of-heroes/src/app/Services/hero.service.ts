@@ -12,10 +12,11 @@ import { MessageService } from './message.service';
 })
 export class HeroService {
 
-  private heroUrl = 'http://localhost:3000/api/heroes';
-  //private heroUrl = 'http://192.168.43.205:802/api/heroes';  //for IIS server
-  //private heroUrl = 'https://localhost:7239/api/heroes';   // for local
+  private heroUrl = 'http://localhost:3000/api/heroes';  // Node JS API for Local
 
+  //private heroUrl = 'https://localhost:7239/api/heroes';   //Web API for local
+  //private heroUrl = 'http://192.168.43.205:802/api/heroes';  //Web API for IIS server
+  
   constructor(private messageService: MessageService, 
               private httpClient: HttpClient) { }
 
@@ -29,31 +30,31 @@ export class HeroService {
   }
 
 /** GET hero by id. Will 404 if id not found */
-getHero(id: number): Observable<Hero> {
-  const url = `${this.heroUrl}/${id}`;
+getHero(Id: number): Observable<Hero> {
+  const url = `${this.heroUrl}/${Id}`;
   return this.httpClient.get<Hero>(url).pipe(
-    tap(_ => this.log(`fetched hero id=${id}`)),
-    catchError(this.handleError<Hero>(`getHero id=${id}`))
+    tap(_ => this.log(`fetched hero id=${Id}`)),
+    catchError(this.handleError<Hero>(`getHero id=${Id}`))
   );
 }
 
 updateHero(hero: Hero) : Observable<any> {
-  return this.httpClient.put(`${this.heroUrl}/${hero.id}`, hero, this.httpOptions).pipe(
-   tap(_ => this.log(`Updated hero Id=${ hero.id }`)),
+  return this.httpClient.put(`${this.heroUrl}/${hero.Id}`, hero, this.httpOptions).pipe(
+   tap(_ => this.log(`Updated hero Name=${ hero.Name }`)),
    catchError(this.handleError<any>('updateHero'))
    );
 }
 
 addHero(hero: Hero) : Observable<Hero> {
-   return this.httpClient.post<Hero>(this.heroUrl, this.httpOptions)
+   return this.httpClient.post<Hero>(this.heroUrl, hero, this.httpOptions)
    .pipe(tap((newHero : Hero) => this.log(`New hero added w/ Id=${ newHero }`)),
         catchError(this.handleError<Hero>('addHero')));
 }
 
-deleteHero(id: number) : Observable<Hero> {
-  const url = `${this.heroUrl}/${id}`;
+deleteHero(Id: number) : Observable<Hero> {
+  const url = `${this.heroUrl}/${Id}`;
   return this.httpClient.delete<Hero>(url, this.httpOptions)
-  .pipe(tap(_=>this.log(`hero deleted id ${id}`)),
+  .pipe(tap(_=>this.log(`hero deleted id ${Id}`)),
   catchError(this.handleError<Hero>('hero deleted'))
   );
 }

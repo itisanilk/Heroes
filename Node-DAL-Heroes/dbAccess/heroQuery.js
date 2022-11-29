@@ -9,7 +9,7 @@ const pool = new Pool({
 });
 
 const getHeroes = (request, response) => {
-    pool.query('SELECT "Id" as id, "Name" as name FROM "Heroes" order by "Id" ASC;', (error, results) => {
+    pool.query('SELECT "Id", "Name" FROM "Heroes" order by "Id" ASC;', (error, results) => {
       if (error) {
         throw error
       }
@@ -19,7 +19,7 @@ const getHeroes = (request, response) => {
 
   const getHeroById = (request, response) => {
     const id = parseInt(request.params.id);
-    pool.query(`SELECT "Id" as id, "Name" as name FROM "Heroes" where "Id"=$1;`, [id], (error, results) => {
+    pool.query(`SELECT "Id", "Name" FROM "Heroes" where "Id"=$1;`, [id], (error, results) => {
       if (error) {
         throw error
       }
@@ -28,24 +28,24 @@ const getHeroes = (request, response) => {
   }
 
     const updateHero=(request, response) => {
-    const { id, name }=request.body;
-
-    pool.query('UPDATE "Heroes" SET "Name"=$2 WHERE "Id"=$1;', [id, name], (error, results) => {
+    const { Id, Name }=request.body;
+    
+    pool.query('UPDATE "Heroes" SET "Name"=$2 WHERE "Id"=$1;', [Id, Name], (error, results) => {
     if(error){
       throw error
     }
-     response.status(200).json(`A hero updated with id: ${id}`);
+     response.status(200).json(`A hero updated with id: ${Id}`);
    })
   }
 
   const addHero=(request, response) => {
-    const { name } = request.body;
+    const { Name } = request.body;
 
-    pool.query('INSERT INTO "Heroes"("Name") VALUES ($1);', [name], (error, results) => {
+    pool.query('INSERT INTO "Heroes"("Name") VALUES ($1);', [Name], (error, results) => {
       if(error){
         throw error;
       }
-      response.status(201).json(`New hero added with name: ${name}`);
+      response.status(201).json(`New hero added with name: ${Name}`);
     }
     )
   }
@@ -66,7 +66,7 @@ const getHeroes = (request, response) => {
 
     //response.send(sub);
     
-    pool.query(`SELECT "Id" as id, "Name" as name FROM "Heroes" where "Name" like '%${name}%';`, 
+    pool.query(`SELECT "Id", "Name" FROM "Heroes" where "Name" like '%${name}%';`, 
     (error, results) => { 
       if(error) { throw error }
     response.status(200).json(results.rows);
