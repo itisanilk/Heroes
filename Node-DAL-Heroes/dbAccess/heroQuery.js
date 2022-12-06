@@ -62,11 +62,11 @@ const getHeroes = (request, response) => {
 
   const searchHeroes=(request, response) => {
     let sub = request.params.sub;
-    let name = request.params.name;
+    let term = request.params.term;
 
     //response.send(sub);
     
-    pool.query(`SELECT "Id", "Name" FROM "Heroes" where "Name" like '%${name}%';`, 
+    pool.query(`SELECT "Id", "Name" FROM "Heroes" where "Name" like '%${term}%';`, 
     (error, results) => { 
       if(error) { throw error }
     response.status(200).json(results.rows);

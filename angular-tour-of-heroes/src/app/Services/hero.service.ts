@@ -62,7 +62,7 @@ deleteHero(Id: number) : Observable<Hero> {
 searchHeroes(term: string) : Observable<Hero[]>{
   if(!term.trim())
    { return of([]); }
-  const url = `${this.heroUrl}/${term}/anystring`
+  const url = `${this.heroUrl}/search/${term}/anythingForTest`
   return this.httpClient.get<Hero[]>(url).pipe(tap(x=>x.length ? 
                this.log(`found heroes matching "${term}"`) :
                this.log(`No heroes matching "${term}"`)),

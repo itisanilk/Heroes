@@ -35,7 +35,7 @@ app.get('/api/heroes/:id', dbQuery.getHeroById);
 app.put('/api/heroes/:id', dbQuery.updateHero);
 app.post('/api/heroes', dbQuery.addHero);
 app.delete('/api/heroes/:id', dbQuery.deleteHero);
-app.get('/api/heroes/:name/:sub', dbQuery.searchHeroes);
+app.get('/api/heroes/search/:term/:sub', dbQuery.searchHeroes);
 //app.get('/api/searchheroes?:name', dbQuery.searchHero);
 
 app.listen(port, () => {
